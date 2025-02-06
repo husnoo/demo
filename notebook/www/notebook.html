@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover, user-scalable=no" >
+        <meta name="color-scheme" content="light dark">
+        
+        <link rel="stylesheet" href="/css/split-pane.css" />
+        <link rel="stylesheet" href="/css/micromodal.css" />
+        <link rel="stylesheet" href="/css/notebook.css">
+        
+        <title>Notebook</title>
+    </head>
+
+    
+    <body>
+
+      <!-- <script src="/cordova.js"></script> -->
+      <script src="/js/micromodal.min.js"></script>
+      <script src="/js/jquery.min.js"></script>
+      <script src="/js/split-pane.js"></script>
+      <script src="/js/Bacon.js"></script>
+      <script src="/js/fabric.js"></script>
+      <script src="/js/common.js"></script>      
+      <script src="/js/Editor.js"></script>
+      <script src="/js/notebook.js"></script>
+
+      <div id="toolbar" class="unselectable">
+        <img src="/img/pan.png" class="toolbar-button active" title="Pan" id="tool-pan" draggable="false">
+        <img src="/img/zoom.png" class="toolbar-button disable_button" title="Zoom" id="tool-zoom" draggable="false">
+        <img src="/img/zoom_reset.png" class="toolbar-button disable_button" title="Reset zoom" id="tool-zoom-reset" draggable="false">
+        <img src="/img/pointer.png" class="toolbar-button" title="Select" id="tool-select" draggable="false">
+        <img src="/img/lasso_select.png" class="toolbar-button disable_button" title="Lasso select" id="tool-lasso-select" draggable="false">
+        <img src="/img/pencil.png" class="toolbar-button" title="Freeform draw" id="tool-draw-free" draggable="false">
+        <img src="/img/draw_line.png" class="toolbar-button disable_button" title="Draw line" id="tool-draw-line" draggable="false">
+        <img src="/img/draw_rectangle.png" class="toolbar-button disable_button" title="Draw rectangle" id="tool-draw-rectangle" draggable="false">
+        <img src="/img/draw_circle.png" class="toolbar-button disable_button" title="Draw circle" id="tool-draw-circle" draggable="false">
+        <img src="/img/text.png" class="toolbar-button" title="Insert text" id="tool-insert-text" draggable="false">
+        <img src="/img/image.png" class="toolbar-button disable_button" title="Insert image" id="tool-insert-image" draggable="false">
+        <img src="/img/eraser.png" class="toolbar-button disable_button" title="Area eraser" id="tool-area-eraser" draggable="false">
+        <img src="/img/lasso_eraser.png" class="toolbar-button disable_button" title="Lasso eraser" id="tool-lasso-eraser" draggable="false">
+             
+        <img src="/img/undo.png" class="toolbar-button disable_button" title="Undo" id="tool-undo" draggable="false">
+        <img src="/img/redo.png" class="toolbar-button disable_button" title="Redo" id="tool-redo" draggable="false">
+        <!--
+          <img src="/img/next_page.png" class="toolbar-button" title="Next page" id="tool-next-page" draggable="false">
+          <img src="/img/prev_page.png" class="toolbar-button" title="Previous page" id="tool-previous-page" draggable="false">
+        -->
+      </div>
+
+
+      
+      <div id="main-window" class="split-pane fixed-left">
+	<div id="main-area" class="split-pane-component">
+	  <canvas id="main-canvas" width="500" height="500">
+          </canvas>
+	</div>
+	<div id="divider" class="split-pane-divider"></div>
+
+	<div id="right-pane" class="split-pane-component">
+          <div id="more-buttons">
+             <img src="/img/copy.png" class="toolbar-button" title="Copy" id="tool-copy" draggable="false">
+             <img src="/img/cut.png" class="toolbar-button" title="Cut" id="tool-cut" draggable="false">
+             <img src="/img/paste.png" class="toolbar-button" title="Paste" id="tool-paste" draggable="false">
+             <br>
+
+             <img src="/img/up.png" class="toolbar-button disable_button" title="Move up" id="tool-move-up" draggable="false">
+             <img src="/img/down.png" class="toolbar-button disable_button" title="Move down" id="tool-move-down" draggable="false">
+             <br>
+             <img src="/img/size1.png" class="small-toolbar-button  small-toolbar-button-active disable_button" title="Smallest" id="size-1" draggable="false">
+             <img src="/img/size2.png" class="small-toolbar-button disable_button" title="Small" id="size-2" draggable="false">
+             <img src="/img/size3.png" class="small-toolbar-button disable_button" title="Large" id="size-3" draggable="false">
+             <img src="/img/size4.png" class="small-toolbar-button disable_button" title="Largest" id="size-4" draggable="false">
+             <br>
+             <button id="reader">Reader mode</button>
+          </div>
+	  <div id="pages">
+            <div id="new-page" class="small-page unselectable">+</div>
+          </div>
+	</div>
+        
+      </div>
+
+
+      <!--
+      <div class="modal micromodal-slide" id="modal-text" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+            <header class="modal__header">
+              <h2 class="modal__title" id="modal-1-title">Micromodal</h2>
+              <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+            </header>
+            <main class="modal__content" id="modal-1-content">
+              <p>Try hitting the <code>tab</code> key and notice how the focus stays within the modal itself. Also, <code>esc</code> to close modal.</p>
+            </main>
+            <footer class="modal__footer">
+              <button class="modal__btn modal__btn-primary">Continue</button>
+              <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+            </footer>
+          </div>
+        </div>
+      </div>
+      -->
+
+
+
+      <canvas id="canvas2" width="0" height="0"></canvas>
+
+    </body>
+</html>

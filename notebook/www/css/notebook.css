@@ -1,0 +1,162 @@
+
+html, body {
+    height: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-y: hidden;
+}
+
+#toolbar {
+    background-color: #D4D0C8;
+    height: 500px;
+    float: left;
+    width: 32px;    
+}
+
+#main-window {
+    margin-left: 32px;
+    background-color: #0000ff;
+}
+
+#main-area {
+    width: 1200px;
+    background-color: #ffffff;
+    overflow-y: hidden;
+}
+
+#divider {
+    left: 1200px; /* same as left component width */
+    width: 5px;
+}
+
+#right-pane {
+    left: 1200px;
+    margin-left: 5px; /* same as divider width */
+    background-color: #fff;
+}
+
+.split-pane-divider {
+    background: #aaa;
+    width: 100px;
+}
+
+#main-canvas {
+    background-color: #ccc;
+    width: 100%;
+    height: 100%;
+}
+
+#canvas2 {
+    display: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+
+.modal {
+  display: none;
+}
+
+.modal.is-open {
+  display: block;
+}
+
+.toolbar-button {
+    width: 24px;
+    margin-left: 4px;
+    margin-top: 2px;
+    padding: 8px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    cursor: pointer;
+    border: 1px solid #D4D0C8;
+}
+
+.small-toolbar-button {
+    width: 16px;
+    margin-left: 4px;
+    margin-top: 2px;
+    padding: 8px;
+    padding-bottom: 6px;
+    padding-top: 6px;
+    cursor: pointer;
+    border: 1px solid #D4D0C8;
+}
+
+.small-toolbar-button:hover {
+    background-color: #e4e0d8;
+
+}
+
+.small-toolbar-button-active {
+    background-color: #e4e0d8;
+    border: 1px dotted #555;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+
+
+.toolbar-button:hover {
+    background-color: #e4e0d8;
+
+}
+
+.active {
+    background-color: #e4e0d8;
+    border: 1px dotted #555;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+.toolbar-button:active {
+    background-color: #e4e0d8;
+    border: 1px dotted #555;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+*.unselectable {
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}
+
+#main-area {
+    overflow-x: none;
+}
+
+#more-buttons {
+    background-color: #D4D0C8;
+    height: 240px;
+
+}
+
+.small-page {
+    display: block;
+    width: 120px;
+    height: 160px;
+    background-color: #ccc;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    font-size: 64px;
+    cursor: pointer;
+    border: solid 1px;
+}
+
+.active-page {
+    background-color: #eee;
+}
+
+.disable_button {
+    opacity: 0.5;
+}
+
+.dotcursor {
+    /* cursor: none !important; */
+    cursor: url('/img/dot.png') 4 4, auto !important;
+}
