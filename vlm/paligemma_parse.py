@@ -1,4 +1,9 @@
-"""Parses PaliGemma output."""
+"""Parses PaliGemma output.
+
+
+NH: This is mostly not my code. I think I got it from Huggingface and I added the tests.
+
+"""
 
 import functools
 import re
