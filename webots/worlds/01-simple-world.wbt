@@ -1,0 +1,966 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/toys/protos/RubberDuck.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/ReflectiveSurface.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation 0.06867751671707334 -0.9531904565705244 -0.29446791370275227 5.803215047881633
+  position -1.1146385716368226 -0.23550939372100999 0.6114941538626979
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 10 10
+}
+Transform {
+  translation 0.5 0.2 0.02
+  scale 0.2 0.2 0.2
+  children [
+    Shape {
+      appearance ReflectiveSurface {
+      }
+      geometry Sphere {
+        radius 0.1
+        subdivision 5
+      }
+    }
+  ]
+}
+RubberDuck {
+  translation 0.44 -0.16 0.01
+  rotation 0 0 1 1.5708
+  scale 0.5
+}
+Robot {
+  children [
+    Gyro {
+    }
+    Accelerometer {
+    }
+    GPS {
+    }
+    DEF BODY Group {
+      children [
+        DEF LEFT_TRACK Pose {
+          translation 0 0.0295 0.014
+          rotation 1 0 0 -1.57
+          children [
+            DEF TRACK Group {
+              children [
+                Pose {
+                  translation -0.049 0 0
+                  children [
+                    DEF TRACK_EXTRUSION Shape {
+                      appearance DEF BLACK PBRAppearance {
+                        baseColor 0 0 0
+                        roughness 0.7
+                        metalness 0
+                      }
+                      geometry IndexedFaceSet {
+                        coord Coordinate {
+                          point [
+                            0 0.014 0
+                            -0.007 0.01212 0
+                            -0.01212 0.007 0
+                            -0.014 0 0
+                            -0.01212 -0.007 0
+                            -0.007 -0.01212 0
+                            0 -0.014 0
+                            0 0.014 0
+                            0 0.014 0.0198
+                            -0.007 0.01212 0.0198
+                            -0.01212 0.007 0.0198
+                            -0.014 0 0.0198
+                            -0.01212 -0.007 0.0198
+                            -0.007 -0.01212 0.0198
+                            0 -0.014 0.0198
+                            0 0.014 0.0198
+                          ]
+                        }
+                        coordIndex [
+                          7, 6, 5, 4, 3, 2, 1, 0, -1, 8, 9, 10, 11, 12, 13, 14, 15, -1, 0, 1, 9, 8, -1, 1, 2, 10, 9, -1, 2, 3, 11, 10, -1, 3, 4, 12, 11, -1, 4, 5, 13, 12, -1, 5, 6, 14, 13, -1, 6, 7, 15, 14, -1
+                        ]
+                      }
+                    }
+                  ]
+                }
+                Pose {
+                  translation 0.049 0 0
+                  rotation 0 0 1 3.14
+                  children [
+                    DEF TRACK_EXTRUSION Shape {
+                      appearance USE BLACK
+                      geometry IndexedFaceSet {
+                        coord Coordinate {
+                          point [
+                            0 0.014 0
+                            -0.007 0.01212 0
+                            -0.01212 0.007 0
+                            -0.014 0 0
+                            -0.01212 -0.007 0
+                            -0.007 -0.01212 0
+                            0 -0.014 0
+                            0 0.014 0
+                            0 0.014 0.0198
+                            -0.007 0.01212 0.0198
+                            -0.01212 0.007 0.0198
+                            -0.014 0 0.0198
+                            -0.01212 -0.007 0.0198
+                            -0.007 -0.01212 0.0198
+                            0 -0.014 0.0198
+                            0 0.014 0.0198
+                          ]
+                        }
+                        coordIndex [
+                          7, 6, 5, 4, 3, 2, 1, 0, -1, 8, 9, 10, 11, 12, 13, 14, 15, -1, 0, 1, 9, 8, -1, 1, 2, 10, 9, -1, 2, 3, 11, 10, -1, 3, 4, 12, 11, -1, 4, 5, 13, 12, -1, 5, 6, 14, 13, -1, 6, 7, 15, 14, -1
+                        ]
+                      }
+                    }
+                  ]
+                }
+                Pose {
+                  translation 0.049 0 0.0101
+                  children [
+                    DEF TRACK_WHEEL Shape {
+                      appearance DEF GRAY PBRAppearance {
+                        roughness 0.2
+                      }
+                      geometry Cylinder {
+                        height 0.0205
+                        radius 0.011
+                      }
+                    }
+                  ]
+                }
+                Pose {
+                  translation -0.049 0 0.0101
+                  children [
+                    USE TRACK_WHEEL
+                  ]
+                }
+                Pose {
+                  translation 0 -0.0125 0.0099
+                  children [
+                    DEF TRACK_BOX Shape {
+                      appearance USE BLACK
+                      geometry Box {
+                        size 0.098 0.003 0.0198
+                      }
+                    }
+                  ]
+                }
+                Pose {
+                  translation 0 0.0125 0.0099
+                  children [
+                    USE TRACK_BOX
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+        DEF RIGHT_TRACK Pose {
+          translation 0 -0.0295 0.014
+          rotation 1 0 0 1.57
+          children [
+            USE TRACK
+          ]
+        }
+        DEF BASE Pose {
+          translation 0 0 0.014
+          children [
+            Pose {
+              translation -0.047 0 0
+              children [
+                Shape {
+                  appearance USE GRAY
+                  geometry Box {
+                    size 0.022 0.056 0.014
+                  }
+                }
+              ]
+            }
+            Pose {
+              translation 0.048 0 0
+              children [
+                Shape {
+                  appearance USE GRAY
+                  geometry Box {
+                    size 0.016 0.056 0.014
+                  }
+                }
+              ]
+            }
+            Pose {
+              translation 0.002 0 0
+              children [
+                Shape {
+                  appearance USE GRAY
+                  geometry Box {
+                    size 0.0765 0.043 0.014
+                  }
+                }
+              ]
+            }
+            Pose {
+              translation -0.049 0 0
+              rotation 1 0 0 1.57
+              children [
+                DEF WHEEL_AXE Shape {
+                  appearance USE GRAY
+                  geometry Cylinder {
+                    height 0.059
+                    radius 0.00635
+                  }
+                }
+              ]
+            }
+            Pose {
+              translation 0.049 0 0
+              rotation 1 0 0 1.57
+              children [
+                USE WHEEL_AXE
+              ]
+            }
+          ]
+        }
+        DEF FRONT_SUPPORT Pose {
+          translation 0.0254 0 0.021
+          children [
+            DEF SUPPORT Group {
+              children [
+                Pose {
+                  translation 0 -0.0127 0.0165
+                  children [
+                    DEF STICK Shape {
+                      appearance USE GRAY
+                      geometry Cylinder {
+                        height 0.033
+                        radius 0.003
+                      }
+                    }
+                  ]
+                }
+                Pose {
+                  translation 0 0.0127 0.0165
+                  children [
+                    USE STICK
+                  ]
+                }
+                Pose {
+                  translation 0.0076 0 0.026
+                  children [
+                    Shape {
+                      appearance USE GRAY
+                      geometry Box {
+                        size 0.0215 0.03175 0.0012
+                      }
+                    }
+                  ]
+                }
+                Pose {
+                  translation 0.0195 0 0.0169
+                  rotation -0.7057612470355353 0.7057642470365854 -0.06162702157112526 3.01848
+                  children [
+                    Shape {
+                      appearance USE GRAY
+                      geometry Box {
+                        size 0.03175 0.0012 0.0185
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+        DEF BACK_SUPPORT Pose {
+          translation -0.0254 0 0.021
+          rotation 0 0 1 3.142
+          children [
+            USE SUPPORT
+          ]
+        }
+        DEF TOP_PLATE Group {
+          children [
+            Pose {
+              translation 0 0 0.0542
+              children [
+                Shape {
+                  appearance USE GRAY
+                  geometry Box {
+                    size 0.076 0.076 0.0015
+                  }
+                }
+              ]
+            }
+            DEF TOP Pose {
+              translation 0 0 0.0551
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColorMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_top_base_color.jpg"
+                      ]
+                    }
+                    roughnessMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_top_roughness.jpg"
+                      ]
+                    }
+                    metalnessMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_top_metalness.jpg"
+                      ]
+                    }
+                    normalMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_top_normal.jpg"
+                      ]
+                    }
+                  }
+                  geometry IndexedFaceSet {
+                    coord Coordinate {
+                      point [
+                        0.038 -0.038 0
+                        -0.038 -0.038 0
+                        -0.038 0.038 0
+                        0.038 0.038 0
+                      ]
+                    }
+                    texCoord TextureCoordinate {
+                      point [
+                        0 0
+                        1 0
+                        1 1
+                        0 1
+                      ]
+                    }
+                    coordIndex [
+                      0, 3, 2, 1, -1
+                    ]
+                    texCoordIndex [
+                      0, 1, 2, 3, -1
+                    ]
+                  }
+                }
+              ]
+            }
+            DEF XBEE Pose {
+              translation 0.011 0.013 0.0631
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColorMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_xbee_base_color.png"
+                      ]
+                    }
+                    roughnessMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_xbee_roughness.jpg"
+                      ]
+                    }
+                    metalnessMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_xbee_metalness.jpg"
+                      ]
+                    }
+                    normalMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_xbee_normal.jpg"
+                      ]
+                    }
+                  }
+                  geometry IndexedFaceSet {
+                    coord Coordinate {
+                      point [
+                        0.0165 -0.012 0
+                        -0.0165 -0.012 0
+                        -0.0165 0.012 0
+                        0.0165 0.012 0
+                      ]
+                    }
+                    texCoord TextureCoordinate {
+                      point [
+                        0 0
+                        1 0
+                        1 1
+                        0 1
+                      ]
+                    }
+                    coordIndex [
+                      0, 3, 2, 1, -1
+                    ]
+                    texCoordIndex [
+                      0, 1, 2, 3, -1
+                    ]
+                  }
+                }
+                Shape {
+                  appearance USE BLACK
+                  geometry IndexedFaceSet {
+                    coord Coordinate {
+                      point [
+                        -0.0165 -0.005 -0.008
+                        -0.01 -0.012 -0.008
+                        0.0165 -0.012 -0.008
+                        0.0165 0.012 -0.008
+                        -0.01 0.012 -0.008
+                        -0.0165 0.005 -0.008
+                        -0.0165 -0.005 -0.008
+                        -0.0165 -0.005 -0.0001
+                        -0.01 -0.012 -0.0001
+                        0.0165 -0.012 -0.0001
+                        0.0165 0.012 0
+                        -0.01 0.012 0
+                        -0.0165 0.005 -0.0001
+                        -0.0165 -0.005 -0.0001
+                      ]
+                    }
+                    coordIndex [
+                      6, 5, 4, 3, 2, 1, 0, -1, 7, 8, 9, 10, 11, 12, 13, -1, 0, 1, 8, 7, -1, 1, 2, 9, 8, -1, 2, 3, 10, 9, -1, 3, 4, 11, 10, -1, 4, 5, 12, 11, -1, 5, 6, 13, 12, -1
+                    ]
+                  }
+                }
+              ]
+            }
+            DEF SERIAL Pose {
+              translation -0.0044 -0.0158 0.0611
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColorMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_serial_base_color.jpg"
+                      ]
+                    }
+                    roughnessMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_serial_roughness.jpg"
+                      ]
+                    }
+                    metalnessMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_serial_metalness.jpg"
+                      ]
+                    }
+                    normalMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_serial_normal.jpg"
+                      ]
+                    }
+                  }
+                  geometry IndexedFaceSet {
+                    coord Coordinate {
+                      point [
+                        0.0335 -0.015 0.0061
+                        -0.0335 -0.015 0.0061
+                        -0.0335 0.015 0.0061
+                        0.0335 0.0145 0.0061
+                      ]
+                    }
+                    texCoord TextureCoordinate {
+                      point [
+                        0 0
+                        1 0
+                        1 1
+                        0 1
+                      ]
+                    }
+                    coordIndex [
+                      0, 3, 2, 1, -1
+                    ]
+                    texCoordIndex [
+                      0, 1, 2, 3, -1
+                    ]
+                  }
+                }
+                Shape {
+                  appearance USE BLACK
+                  geometry Box {
+                    size 0.067 0.03 0.012
+                  }
+                }
+              ]
+            }
+            DEF SERIAL_PORT Pose {
+              translation -0.0375 -0.0158 0.0665
+              rotation 0 1 0 -1.57
+              children [
+                Shape {
+                  appearance USE GRAY
+                  geometry IndexedFaceSet {
+                    coord Coordinate {
+                      point [
+                        -0.003 -0.006 0
+                        0.003 -0.0075 0
+                        0.003 0.0075 0
+                        -0.003 0.006 0
+                        -0.003 -0.006 0
+                        -0.003 -0.006 0.01
+                        0.003 -0.0075 0.01
+                        0.003 0.0075 0.01
+                        -0.003 0.006 0.01
+                        -0.003 -0.006 0.01
+                      ]
+                    }
+                    coordIndex [
+                      4, 3, 2, 1, 0, -1, 5, 6, 7, 8, 9, -1, 0, 1, 6, 5, -1, 1, 2, 7, 6, -1, 2, 3, 8, 7, -1, 3, 4, 9, 8, -1
+                    ]
+                  }
+                }
+                Shape {
+                  appearance PBRAppearance {
+                    baseColorMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_serial_port.png"
+                      ]
+                    }
+                    roughness 1
+                    metalness 0
+                  }
+                  geometry IndexedFaceSet {
+                    coord Coordinate {
+                      point [
+                        0.0025 -0.006 0.0101
+                        -0.0025 -0.0068 0.0101
+                        -0.0025 0.0068 0.0101
+                        0.0025 0.0068 0.0101
+                      ]
+                    }
+                    texCoord TextureCoordinate {
+                      point [
+                        1 1
+                        0 1
+                        0 0
+                        1 0
+                      ]
+                    }
+                    coordIndex [
+                      0, 3, 2, 1, -1
+                    ]
+                    texCoordIndex [
+                      0, 1, 2, 3, -1
+                    ]
+                  }
+                }
+                Pose {
+                  translation 0 0 0.004
+                  children [
+                    Shape {
+                      appearance USE GRAY
+                      geometry Box {
+                        size 0.012 0.03 0.001
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+        DEF FRONT_PLATE Pose {
+          translation 0.047 0 0.041
+          rotation 0 1 0 1.395
+          children [
+            Pose {
+              children [
+                Shape {
+                  appearance USE GRAY
+                  geometry Box {
+                    size 0.0265 0.02 0.0012
+                  }
+                }
+              ]
+            }
+            DEF FRONT Pose {
+              translation 0 0 0.0007
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColorMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_front_base_color.jpg"
+                      ]
+                    }
+                    roughnessMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_front_roughness.jpg"
+                      ]
+                    }
+                    metalnessMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_front_metalness.jpg"
+                      ]
+                    }
+                    normalMap ImageTexture {
+                      url [
+                        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/surveyor/protos/textures/surveyor_front_normal.jpg"
+                      ]
+                    }
+                  }
+                  geometry IndexedFaceSet {
+                    coord Coordinate {
+                      point [
+                        0.01325 -0.01 0
+                        -0.01325 -0.01 0
+                        -0.01325 0.01 0
+                        0.01325 0.01 0
+                      ]
+                    }
+                    texCoord TextureCoordinate {
+                      point [
+                        0 0
+                        1 0
+                        1 1
+                        0 1
+                      ]
+                    }
+                    coordIndex [
+                      0, 3, 2, 1, -1
+                    ]
+                    texCoordIndex [
+                      0, 1, 2, 3, -1
+                    ]
+                  }
+                }
+              ]
+            }
+            Pose {
+              translation 0.002 0 -0.001
+              children [
+                Shape {
+                  appearance USE BLACK
+                  geometry Box {
+                    size 0.015 0.01 0.0025
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+    DEF CAMERA Camera {
+      translation 0.058 0 0.037
+      rotation 0 1 0 -0.1742
+      children [
+        Pose {
+          translation -0.0075 0 0
+          children [
+            Shape {
+              appearance USE BLACK
+              geometry Box {
+                size 0.005 0.014 0.014
+              }
+            }
+          ]
+        }
+        Pose {
+          translation -0.0025 0 0
+          rotation 0 1 0 -1.57
+          children [
+            Shape {
+              appearance USE BLACK
+              geometry Cylinder {
+                height 0.005
+                radius 0.0045
+              }
+            }
+          ]
+        }
+      ]
+      fieldOfView 0.994838
+      width 320
+      height 240
+      near 0.005
+    }
+    DEF FIRST_LEFT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 -1 0
+        anchor 0.049 0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor00"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor00"
+        }
+      ]
+      endPoint Solid {
+        translation 0.049 0.0394 0.014
+        rotation 0 -1 0 0
+        name "first left wheel"
+        contactMaterial "wheel"
+        boundingObject DEF BOUNDING_WHEEL Pose {
+          rotation 1 0 0 -1.57
+          children [
+            Cylinder {
+              height 0.0198
+              radius 0.014
+            }
+          ]
+        }
+        physics DEF PHYSICS_FRONT_WHEEL Physics {
+          density -1
+          mass 0.005
+        }
+      }
+    }
+    DEF SECOND_LEFT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 -1 0
+        anchor 0.0245 0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor01"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor01"
+        }
+      ]
+      endPoint Solid {
+        translation 0.0245 0.0394 0.014
+        rotation 0 -1 0 0
+        name "second left wheel"
+        contactMaterial "wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics USE PHYSICS_FRONT_WHEEL
+      }
+    }
+    DEF THIRD_LEFT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 -1 0
+        anchor 0 0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor02"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor02"
+        }
+      ]
+      endPoint Solid {
+        translation 0 0.0394 0.014
+        rotation 0 -1 0 0
+        name "third left wheel"
+        contactMaterial "center_wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics DEF PHYSICS_CENTER_WHEEL Physics {
+          density -1
+          mass 0.005
+        }
+      }
+    }
+    DEF FOURTH_LEFT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 -1 0
+        anchor -0.0245 0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor03"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor03"
+        }
+      ]
+      endPoint Solid {
+        translation -0.0245 0.0394 0.014
+        rotation 0 -1 0 0
+        name "fourth left wheel"
+        contactMaterial "wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics USE PHYSICS_FRONT_WHEEL
+      }
+    }
+    DEF LAST_LEFT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 -1 0
+        anchor -0.049 0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor04"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor04"
+        }
+      ]
+      endPoint Solid {
+        translation -0.049 0.0394 0.014
+        rotation 0 -1 0 0
+        name "last left wheel"
+        contactMaterial "wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics USE PHYSICS_FRONT_WHEEL
+      }
+    }
+    DEF FIRST_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 -1 0
+        anchor 0.049 -0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor05"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor05"
+        }
+      ]
+      endPoint Solid {
+        translation 0.049 -0.0394 0.014
+        rotation 0 -1 0 0
+        name "first right wheel"
+        contactMaterial "wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics USE PHYSICS_FRONT_WHEEL
+      }
+    }
+    DEF SECOND_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 -1 0
+        anchor 0.0245 -0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor06"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor06"
+        }
+      ]
+      endPoint Solid {
+        translation 0.0245 -0.0394 0.014
+        rotation 0 -1 0 0
+        name "second right wheel"
+        contactMaterial "wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics USE PHYSICS_FRONT_WHEEL
+      }
+    }
+    DEF THIRD_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 -1 0
+        anchor 0 -0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor07"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor07"
+        }
+      ]
+      endPoint Solid {
+        translation 0 -0.0394 0.014
+        rotation 0 -1 0 0
+        name "third right wheel"
+        contactMaterial "center_wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics USE PHYSICS_CENTER_WHEEL
+      }
+    }
+    DEF FOURTH_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 -1 0
+        anchor -0.0245 -0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor08"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor08"
+        }
+      ]
+      endPoint Solid {
+        translation -0.0245 -0.0394 0.014
+        rotation 0 -1 0 0
+        name "forth right wheel"
+        contactMaterial "wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics USE PHYSICS_FRONT_WHEEL
+      }
+    }
+    DEF LAST_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 -1 0
+        anchor -0.049 -0.0394 0.014
+      }
+      device [
+        RotationalMotor {
+          name "wheel_motor09"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "wheel_sensor09"
+        }
+      ]
+      endPoint Solid {
+        translation -0.049 -0.0394 0.014
+        rotation 0 -1 0 0
+        name "last right wheel"
+        contactMaterial "wheel"
+        boundingObject USE BOUNDING_WHEEL
+        physics USE PHYSICS_FRONT_WHEEL
+      }
+    }
+  ]
+  name "SurveyorSrv1"
+  model "SRV-1"
+  boundingObject Group {
+    children [
+      Pose {
+        translation 0 0 0.03
+        children [
+          Box {
+            size 0.114 0.0535 0.045
+          }
+        ]
+      }
+      Pose {
+        translation -0.0039 0 0.063
+        children [
+          Box {
+            size 0.087 0.08 0.017
+          }
+        ]
+      }
+    ]
+  }
+  physics Physics {
+    density -1
+    mass 0.324
+    centerOfMass [
+      -0.005 0 0.028
+    ]
+    inertiaMatrix [
+      0.000267079 0.000473553 0.000418585
+      0 -6.02166e-06 0
+    ]
+  }
+  controller "<extern>"
+}
