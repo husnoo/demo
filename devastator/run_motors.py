@@ -1,11 +1,12 @@
 from src.robot import Robot
 from src.pubsub import Sub
+from src import config
 
 def main():
     robot = Robot()
     
-    sub_left = Sub("tcp://127.0.0.1:12345", '/motor_left')
-    sub_right = Sub("tcp://127.0.0.1:12345", '/motor_right')
+    sub_left = Sub(config.MOTORS_ADDR, '/motor_left')
+    sub_right = Sub(config.MOTORS_ADDR, '/motor_right')
 
     left = 0
     right = 0

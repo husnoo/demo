@@ -2,11 +2,12 @@ import cv2
 import threading
 from src.pubsub import Pub, Sub
 from src.pubsub import decode_numpy
+from src import config
 
 def camera_loop():
     cv2.startWindowThread()
-    sub_cam = Sub("tcp://127.0.0.1:12345", '/camera')
-    #sub_cam = Sub("tcp://127.0.0.1:12345", '/camera_labelled')
+    sub_cam = Sub(config.CAM_ADDR, '/camera')
+    #sub_cam = Sub(config.CAM_LABELLED_ADDR, '/camera_labelled')
     while True:
         frame = sub_cam.recv()
         if frame is not None:
@@ -17,17 +18,17 @@ def camera_loop():
 
 
 def main():
-    # Start the camera in a separate thread
+    # Start the camera viewer in a separate thread
     camera_thread = threading.Thread(target=camera_loop, daemon=True)
     camera_thread.start()
-    pub = Pub("tcp://127.0.0.1:12345")
+    pub_target = Pub(config.TARGET_ADDR)
 
     
     while True:
         text = input("What target? ")
         if text.lower() == "exit":
             break
-        pub.send('/target', text)
+        pub_target.send('/target', text)
         print("OK")
 
 if __name__ == '__main__':

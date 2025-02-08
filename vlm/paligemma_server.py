@@ -84,7 +84,12 @@ with pynng.Pair0(recv_timeout=100, send_timeout=1) as sock:
             #print(image.shape, image.dtype, prompt,  image[240,:,0])
             #print('time_decode_request-time_start:', time_decode_request-time_start)
 
-            inputs = processor(prompt, image, return_tensors="pt").to("cuda")
+            try:
+                inputs = processor(prompt, image, return_tensors="pt").to("cuda")
+            except ValueError as err:
+                print(err)
+                continue
+            
             # https://huggingface.co/google/paligemma-3b-mix-448/discussions/6
             #time_prep_input = datetime.datetime.now()        
             output = model.generate(**inputs, max_new_tokens=max_tokens)
