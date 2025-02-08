@@ -83,16 +83,17 @@ def main():
         # TODO: Is this calling too often? It's meant to wait until there's been a reply
         if target is not None and frame is not None:
             prompt = 'detect ' + target
-            print('call vlm...')
+            #print('call vlm...')
             response = vlm.process(frame, prompt)
 
-            print('response:', response)
+            #print('response:', response)
             # Need to check multiple times and only make a new call if free
             if response['ret'] is not None and 'objects' in response['ret']:
                 if len(response['ret']['objects']) > 0:
                     objects_detected = []
                     for obj in response['ret']['objects']:
-                        if 'xyxy' in obj:
+                        if 'xyxy' in obj and target in obj['name']:
+                            print(f"target: {target}, name: {obj['name']}")
                             objects_detected.append(obj)
                             #print('obj:', obj)
 
@@ -115,12 +116,24 @@ def main():
 
             mid_point = ((start_point[0] + end_point[0]) / 2 , (start_point[1] + end_point[1]) / 2)
             print('midpoint:', mid_point, ', frame.shape:', frame_.shape)
+            pos_x = mid_point[0] - frame_.shape[0]/2
+
+            if numpy.abs(pos_x) > 10:
+                #rotate_right(pos_x/100)
+                left = pos_x/100
+                right = -pos_x/100
+            else:
+                #move_forward(10)
+                left = 1.0
+                right = 1.0
+
+            pub_motors.send('/motor_left', left)
+            pub_motors.send('/motor_right', right)
+
             
         print('end of one cycle')
         time.sleep(1)
         
-    #pub.send('/motor_left', 1.0)
-    #pub.send('/motor_right', 1.0)
     
 
 
