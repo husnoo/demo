@@ -12,25 +12,8 @@ class FakeTime:
 import gzip
 gzip.time = FakeTime()
 
+NOTEBOOKS_DIR = './data'
 
-if socket.gethostname()=='heisenbug':
-    DOCUMENTS_DIR = '/home/nawal/data/shared_large_files/documents'
-    NOTEBOOKS_DIR = '/home/nawal/data/shared_large_files/notebooks/notebooks-data'
-    OUTPUT_PDF_DIR = '/home/nawal/data/shared_large_files/notebooks/notebooks-pdf'
-elif socket.gethostname()=='localhost':
-    DOCUMENTS_DIR = '/storage/sdcard0/Nawal-internal/syncthing/documents'
-    NOTEBOOKS_DIR = '/storage/sdcard0/Nawal-internal/syncthing/notebooks/notebooks-data/'
-else:
-    raise Hell()
-
-
-#if socket.gethostname()=='localhost':
-#    file_path = '/storage/sdcard0/Nawal-internal/syncthing/notebooks/stuff/page1.json.gz'
-#    with gzip.open(file_path, 'r') as f:
-#        page_data = f.read().decode('utf-8')
-#    print(page_data)
-
-    
 def load_notebook(notebook_name, page_number):
     file_path = os.path.join(NOTEBOOKS_DIR, notebook_name, 'page{}.json.gz'.format(page_number))
     if os.path.exists(file_path):

@@ -1,13 +1,6 @@
 // THIS IS MINE
 
-console.log("useragent:"+navigator.userAgent);
-var is_android = navigator.userAgent.includes("Android");
-if (is_android) {
-    //document.addEventListener('deviceready', onDeviceReady, false);
-    alert('Android!');
-} else {
-    ready(onDeviceReady);
-}
+ready(onDeviceReady);
 
 /* BEGIN: resize stuff */
 
@@ -38,29 +31,8 @@ function onResize() {
 /* END: resize stuff */
 
 
-
-function CordovaFileBrowser() {
-    this.get_file_browser_type = function() {
-        return 'cordova';
-    }
-}
-
-function PythonFileBrowser() {
-    this.get_file_browser_type = function () {
-        return 'python';
-    }
-}
-
-
 function onDeviceReady() {
     console.log("Check that console.log works.");
-
-    if (is_android) {
-        file_browser = new CordovaFileBrowser();
-    } else {
-        file_browser = new PythonFileBrowser();
-    }
-    console.log('file_browser_type:' + file_browser.get_file_browser_type());
 
     $("#main-window").on('splitpaneresize', function (evt) {
         onResize();

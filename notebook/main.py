@@ -1,36 +1,12 @@
 #!/usr/bin/env python
 
-# WS server that sends messages at random intervals
-# Serve the main page from this app too
-
-
-#import asyncio
-#import datetime
-#import random
-#import websockets
 import bottle
-#import threading
 import json
 import src.backend_store
 import os
 import pathlib
+
 RUN_DIR = pathlib.Path(__file__).parent.absolute()
-
-'''
-async def time(websocket, path):
-    while True:
-        now = datetime.datetime.utcnow().isoformat() + "Z"
-        await websocket.send(now)
-        await asyncio.sleep(random.random() * 3)
-
-
-def thread_function():
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    start_server = websockets.serve(time, "0.0.0.0", 5678)
-    asyncio.get_event_loop().run_until_complete(start_server)
-    asyncio.get_event_loop().run_forever()
-'''
 
 
 @bottle.route('/notebook/<notebook>')
@@ -38,6 +14,7 @@ def notebook(notebook):
     with open(os.path.join(RUN_DIR,'www/notebook.html'), 'r') as f:
        data = f.read()
     return data
+
 
 @bottle.route('/reader/<notebook>')
 def reader(notebook):
@@ -78,14 +55,10 @@ def get_num_pages(notebook_name):
     num_pages = src.backend_store.get_num_pages(notebook_name)
     return str(num_pages)
 
+
 @bottle.route('/<filepath:path>')
 def server_static(filepath):
     return bottle.static_file(filepath, root=os.path.join(RUN_DIR,'www'))
-
-
-@bottle.route('/cordova.js')
-def cordova():
-    return ''
 
 
 @bottle.route('/')
@@ -134,9 +107,7 @@ body {
 
 
 def main():
-    #x = threading.Thread(target=thread_function)
-    #x.start()
-    bottle.run(host='0.0.0.0', port=8080, reloader=False)
+    bottle.run(host='0.0.0.0', port=8000, reloader=False)
 
 if __name__=='__main__':
     main()
