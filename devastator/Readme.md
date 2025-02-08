@@ -11,6 +11,13 @@ python
 >>> robot.stop()
 ```
 
+# Running the end-to-end demo
+
+nix-shell -p realvnc-vnc-viewer
+vncviewer 192.168.0.23
+cd ~/demo/devastator/
+/usr/bin/python display_camera.py
+
 
 
 # Plan
