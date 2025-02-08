@@ -4,12 +4,13 @@
 
 import picamera2
 from src.pubsub import Pub, encode_numpy
+from src import config
 
 picam2 = picamera2.Picamera2()
-picam2.configure(picam2.create_preview_configuration(main={"format": 'XRGB8888', "size": (640, 480)}))
+picam2.configure(picam2.create_preview_configuration(main={"format": 'RGB888', "size": (640, 480)}))
 picam2.start()
 
-pub = Pub("tcp://127.0.0.1:12345")
+pub = Pub(config.CAM_ADDR)
 
 while True:
     frame = picam2.capture_array()
