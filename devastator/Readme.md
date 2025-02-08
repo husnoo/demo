@@ -52,7 +52,6 @@ cd ~/data/demo/devastator/playground
 ```
 python pubsub_recv.py
 python pubsub_send.py
-
 ```
 
 
