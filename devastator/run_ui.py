@@ -1,39 +1,35 @@
 import cv2
-import picamera2
 import threading
+from src.pubsub import Pub, Sub
+from src.pubsub import decode_numpy
 
 def camera_loop():
     cv2.startWindowThread()
-    
-    picam2 = picamera2.Picamera2()
-    picam2.configure(picam2.create_preview_configuration(main={"format": 'XRGB8888', "size": (640, 480)}))
-    picam2.start()
-
+    sub_cam = Sub("tcp://127.0.0.1:12345", '/camera')
+    #sub_cam = Sub("tcp://127.0.0.1:12345", '/camera_labelled')
     while True:
-        frame = picam2.capture_array()    
-        cv2.imshow("Camera", frame)
+        frame = sub_cam.recv()
+        if frame is not None:
+            cv2.imshow("Camera", decode_numpy(frame))
         if cv2.waitKey(1) == 27:  # Press 'Esc' to exit
             break
-
-    picam2.stop()
     cv2.destroyAllWindows()
-
-
-
-
-
-def process(text):
-    print(f"Processing: {text}")
 
 
 def main():
     # Start the camera in a separate thread
     camera_thread = threading.Thread(target=camera_loop, daemon=True)
     camera_thread.start()
+    pub = Pub("tcp://127.0.0.1:12345")
 
+    
     while True:
         text = input("What target? ")
         if text.lower() == "exit":
             break
-        process(text)
+        pub.send('/target', text)
         print("OK")
+
+if __name__ == '__main__':
+    main()
+

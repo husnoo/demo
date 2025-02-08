@@ -1,5 +1,7 @@
 import pynng
 import msgpack
+import numpy
+
 
 class Pub:
     def __init__(self, address):
@@ -8,9 +10,9 @@ class Pub:
 
     def send(self, topic, value):
         msg = topic.encode('ascii') + msgpack.packb(value)
-        print(type(msg))
+        #print(type(msg))
         self.pub.send(msg)
-        print(f"published to {topic}, value={value}")
+        #print(f"published to {topic}, value={value}")
 
 
 class Sub:
@@ -20,7 +22,7 @@ class Sub:
         self.sub = pynng.Sub0(recv_timeout=10)
         self.sub.dial(address)
         self.sub.subscribe(topic.encode('ascii'))
-        print(f"Subscribed to {topic}")
+        #print(f"Subscribed to {topic}")
 
     def recv(self):
         try:
@@ -33,5 +35,17 @@ class Sub:
             return data
         else:
             return None
-        
+
+
+def encode_numpy(value):
+    encoded = {
+        'value': value.tobytes(),
+        "shape": value.shape
+    }
+    return encoded
+
+
+def decode_numpy(encoded):
+    value = numpy.frombuffer(encoded['value'], dtype=numpy.uint8).reshape(encoded['shape'])
+    return value
 
