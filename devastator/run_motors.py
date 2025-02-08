@@ -2,6 +2,8 @@ from src.robot import Robot
 from src.pubsub import Sub
 from src import config
 
+import time
+
 def main():
     robot = Robot()
     
@@ -33,6 +35,8 @@ def main():
             right = 0
         if left == 0 and right == 0:
             robot.stop()
+
+        time.sleep(0.1)
 
 
 if __name__ == '__main__':

@@ -15,6 +15,8 @@ from src import config
 
 import pynng
 import msgpack
+import numpy
+import cv2
 
 class VLMProxy:
     def __init__(self, url):
@@ -66,6 +68,7 @@ def main():
     # we keep a long-lived variable with the current target/frame and update if new one comes through
     target = None 
     frame = None
+    objects_detected = []
     while 1:
         target_ = sub_target.recv()
         if target_ is not None:
@@ -76,6 +79,8 @@ def main():
         if frame_ is not None:
             frame = decode_numpy(frame_)
 
+
+        # TODO: Is this calling too often? It's meant to wait until there's been a reply
         if target is not None and frame is not None:
             prompt = 'detect ' + target
             print('call vlm...')
@@ -85,13 +90,35 @@ def main():
             # Need to check multiple times and only make a new call if free
             if response['ret'] is not None and 'objects' in response['ret']:
                 if len(response['ret']['objects']) > 0:
+                    objects_detected = []
                     for obj in response['ret']['objects']:
                         if 'xyxy' in obj:
-                            #objects_detected[prompt] = obj
-                            print('obj:', obj)
+                            objects_detected.append(obj)
+                            #print('obj:', obj)
+
+
+
+
+
+        # draw frame around object
+        for obj in objects_detected:
+            frame_ = numpy.copy(frame)
+            start_point = [obj['xyxy'][0],obj['xyxy'][1]]
+            end_point = [obj['xyxy'][2],obj['xyxy'][3]]
+            color = (255, 0, 0)
+            color = color[::-1]
+            thickness = 2
+            cv2.rectangle(frame_, start_point, end_point, color, thickness)
+            cv2.putText(frame_, obj['name'], start_point, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 1, cv2.LINE_AA)
+            # publish it
+            pub_cam_labelled.send('/camera_labelled', encode_numpy(frame_))
+
+            mid_point = ((start_point[0] + end_point[0]) / 2 , (start_point[1] + end_point[1]) / 2)
+            print('midpoint:', mid_point, ', frame.shape:', frame_.shape)
+            
         print('end of one cycle')
         time.sleep(1)
-    #pub_cam_labelled.send('/camera_labelled', encode_numpy(frame))
+        
     #pub.send('/motor_left', 1.0)
     #pub.send('/motor_right', 1.0)
     
