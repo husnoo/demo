@@ -36,3 +36,24 @@ python
   - calls paligemma server for location information
   - publishes `/camera_labelled`
   - publishes `/motor_left` and `/motor_right`
+
+
+
+
+# playground
+```
+nix-shell -p conda -p libglvnd -p libGLU -p mesa -p freeglut -p glxinfo
+conda-shell
+conda activate test_opencv
+cd ~/data/demo/devastator/playground
+```
+
+- Figuring out pynng on mac:
+```
+python pubsub_recv.py
+python pubsub_send.py
+
+```
+
+
+
