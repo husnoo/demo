@@ -22,8 +22,9 @@ cd ~/demo/devastator/
 
 /usr/bin/python run_camera.py
 /usr/bin/python run_ui.py
-/usr/bin/python run_motors.py
 /usr/bin/python run_controller.py
+/usr/bin/python run_display.py
+/usr/bin/python run_motors.py
 
 
 On rita:
