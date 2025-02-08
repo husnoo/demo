@@ -12,13 +12,25 @@ python
 ```
 
 # Running the end-to-end demo
-
+```
 nix-shell -p realvnc-vnc-viewer
 vncviewer 192.168.0.23
 cd ~/demo/devastator/
-/usr/bin/python display_camera.py
+
+(base) nawal@raspberrypi:~/demo/devastator $ /usr/bin/pip install -U pynng
+(base) nawal@raspberrypi:~/demo/devastator $ sudo apt-get install python3-msgpack
+
+/usr/bin/python run_camera.py
+/usr/bin/python run_ui.py
+/usr/bin/python run_motors.py
+/usr/bin/python run_controller.py
 
 
+On rita:
+/home/nawal/storage/demo/vlm/run_paligemma_server.sh
+watch -n1 nvidia-smi
+
+```
 
 # Plan
 
