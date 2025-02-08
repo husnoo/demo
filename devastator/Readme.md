@@ -26,11 +26,11 @@ python
     - set control values to motors
     - if no new controls in the last 0.5 seconds, stop for safety
 
-- `ui.py`
+- `run_ui.py`
   - simple loop to take inputs and publish user targets to `/target`
   - also displays any images from  `/camera_labelled`
 
-- `controller.py`
+- `run_controller.py`
   - takes text targets from `/target`
   - takes image from `/camera`
   - calls paligemma server for location information
