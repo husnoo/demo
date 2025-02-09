@@ -15,11 +15,15 @@ import datetime
 import time
 import numpy
 
-#from src.robot import Robot
+from src.robot import Robot
+
+
+
+
 
 
 def main():
-    #robot = Robot()
+    robot = Robot()
     print('START')
 
     speeds = numpy.arange(0.2,1.01,0.2)
@@ -29,18 +33,20 @@ def main():
         print(f'rotation_speed: {rotation_speed}, CW')
         input('Press Enter to begin...')
         start = datetime.datetime.now()
-        #robot.spin_cw(rotation_speed)
+        robot.spin_cw(rotation_speed)
         input('Press Enter when 20 rotations have happened')
         stop = datetime.datetime.now()
         time_cw[i] = (stop-start).total_seconds()
+        robot.stop()
 
         print(f'rotation_speed: {rotation_speed}, CCW')
         input('Press Enter to begin...')
         start = datetime.datetime.now()
-        #robot.spin_cw(-rotation_speed)
+        robot.spin_cw(-rotation_speed)
         input('Press Enter when 20 rotations have happened')
         stop = datetime.datetime.now()
         time_ccw[i] = (stop-start).total_seconds()
+        robot.stop()
         
         print('---')
 
