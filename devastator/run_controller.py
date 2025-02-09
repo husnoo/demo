@@ -120,8 +120,8 @@ def main():
 
             if numpy.abs(pos_x) > 10:
                 #rotate_right(pos_x/100)
-                left = pos_x/100
-                right = -pos_x/100
+                left = pos_x/10000
+                right = -pos_x/10000
             else:
                 #move_forward(10)
                 left = 1.0
