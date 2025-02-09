@@ -62,27 +62,47 @@ class VLMProxy:
 
 def main():
     robot = Robot()
-    #robot.set_left_tread_speed(speed)
-    #robot.set_right_tread_speed(speed)
 
     cv2.startWindowThread()
     picam2 = picamera2.Picamera2()
     picam2.configure(picam2.create_preview_configuration(main={"format": 'XRGB888', "size": (640, 480)}))
     picam2.start()
 
+    target = 'red bottle'
+
+
+    prompt = 'detect ' + target
+    objects_detected = []
     while True:
         frame = picam2.capture_array()
         # look for target
-
+        response = vlm.process(frame, prompt)
+        if response['ret'] and 'objects' in response['ret']:
+            # we have objects
+            objects_detected = []
+            for obj in response['ret']['objects']:
+                if 'xyxy' in obj and target in obj['name']:
+                    print(f"target: {target}, name: {obj['name']}")
+                    objects_detected.append(obj)
 
 
         # steer robot
-
+        #robot.set_left_tread_speed(speed)
+        #robot.set_right_tread_speed(speed)
 
 
         
         # draw box around target
-        
+        for obj in objects_detected:
+            frame = numpy.copy(frame)
+            start_point = [obj['xyxy'][0],obj['xyxy'][1]]
+            end_point = [obj['xyxy'][2],obj['xyxy'][3]]
+            color = (255, 0, 0)
+            color = color[::-1]
+            thickness = 2
+            cv2.rectangle(frame, start_point, end_point, color, thickness)
+            cv2.putText(frame, obj['name'], start_point, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 1, cv2.LINE_AA)
+
         # update camera display
         cv2.imshow("Camera", frame)
         cv2.waitKey(1)

@@ -15,19 +15,39 @@ import datetime
 import time
 import numpy
 import pylab
-
-from src.robot import Robot
-
+try:
+    from src.robot import Robot
+except:
+    pass
 
 def analysis():
     speeds = numpy.arange(0.6,1.01,0.1)
     counts = numpy.array([5,5,10,20,20])
-    ccw_time = [147.137595,  41.266779,  45.56845,   59.802386,  43.389424]
-    cw_time = [149.367774,  40.58986,   43.930003,  58.371789,  42.395014]
+    ccw_time = numpy.array([147.137595,  41.266779,  45.56845,   59.802386,  43.389424])
+    cw_time = numpy.array([149.367774,  40.58986,   43.930003,  58.371789,  42.395014])
+    avg_time = (ccw_time + cw_time) / 2.0
+    time_per_rotation = avg_time / counts
+    degrees_per_second = 360 / time_per_rotation
+
+    coeffs = numpy.polyfit(speeds, degrees_per_second, 2)
+    qfunc = numpy.poly1d(coeffs)
+    print("coeffs:", coeffs)
+    # coeffs: [237.70067705   8.99598535 -78.82208964]
+    speeds_fit = numpy.linspace(0.55, 1, 100)
+    degrees_fit = qfunc(speeds_fit)
+
     pylab.ion()
+    pylab.plot(speeds, degrees_per_second, marker='s')
+    pylab.plot(speeds_fit, degrees_fit, label='Fitted', color='red')
+    pylab.xlabel('speed')
+    pylab.ylabel('deg/s')
+    pylab.grid(True)
 
-
-
+    # So if the distance is about 2m, and an object is about 30cm to the right, we need to move 
+    # 180*numpy.arctan(30/200)/numpy.pi = 8.530 degrees
+    # the VM takes about 2-3 seconds to respond, so we don't want to move more than  8.530 / 3 == 2.84deg/s
+    # this is around 0.567 in terms of driving speed
+    
 
 def main():
     robot = Robot()
