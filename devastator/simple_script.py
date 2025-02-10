@@ -76,7 +76,12 @@ def main(robot):
     # this is around 0.567 in terms of driving speed
     # s=0.60, 12deg/s roughly
 
-
+    # distance to target ~176cm, ~22cm off center
+    # image is 640x480, the bottle is 424px away from left
+    # or (- 424 (/ 640 2))=104px off center
+    # so 104px==22cm, and angle is arctan(22/176)=0.1243rad=7.12degrees
+    # at s=0.6, we would rotate at 12deg/s, so for 7.12deg we need to rotate for (/ 7.12 12)=0.59seconds
+    
     cv2.startWindowThread()
     picam2 = picamera2.Picamera2()
     picam2.configure(picam2.create_preview_configuration(main={"format": 'RGB888', "size": (640, 480)}))
@@ -84,56 +89,74 @@ def main(robot):
 
     target = 'red bottle'
 
-    vlm = VLMProxy('tcp://192.168.0.52:8089')
+    #vlm = VLMProxy('tcp://192.168.0.52:8089')
     prompt = 'detect ' + target
     objects_detected = []
     while True:
         frame = picam2.capture_array()
         # look for target
-        response = vlm.process(frame, prompt, block=True)
-        if response['ret'] and 'objects' in response['ret']:
-            # we have objects
-            objects_detected = []
-            for obj in response['ret']['objects']:
-                if 'xyxy' in obj and target in obj['name']:
-                    print(f"target: {target}, name: {obj['name']}")
-                    objects_detected.append(obj)
+        #response = vlm.process(frame, prompt, block=True)
+        #if response['ret'] and 'objects' in response['ret']:
+        #    # we have objects
+        #    objects_detected = []
+        #    for obj in response['ret']['objects']:
+        #        if 'xyxy' in obj and target in obj['name']:
+        #            print(f"target: {target}, name: {obj['name']}")
+        #            objects_detected.append(obj)
         
-
-        # steer robot
-        #robot.set_left_tread_speed(speed)
-        #robot.set_right_tread_speed(speed)
-        for i,obj in enumerate(objects_detected):
-            if target in obj['name']:
-                x = (obj['xyxy'][0] + obj['xyxy'][2]) / 2.0
-                y = (obj['xyxy'][1] + obj['xyxy'][3]) / 2.0
-                dx = x - frame.shape[1] / 2
-                print(i, x, y, frame.shape, dx)
-                # if distance is 2m, we need to turn:
-                
-                
-                #0 406.0 254.5 (480, 640, 3) 85.5
-                #speed = 0.55 + (-dx/100/5.0)
-                #robot.set_left_tread_speed(speed)
-                #robot.set_right_tread_speed(-speed)
-                break # keep only first matching target
-                
-        # draw box around target
-        for i,obj in enumerate(objects_detected):
-            frame = numpy.copy(frame)
-            start_point = [obj['xyxy'][0],obj['xyxy'][1]]
-            end_point = [obj['xyxy'][2],obj['xyxy'][3]]
-            color = (255, 0, 0)
-            color = color[::-1]
-            thickness = 2
-            cv2.rectangle(frame, start_point, end_point, color, thickness)
-            cv2.putText(
-                frame, obj['name'], start_point, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 1, cv2.LINE_AA)
+        ## draw box around target
+        #for i,obj in enumerate(objects_detected):
+        #    frame = numpy.copy(frame)
+        #    start_point = [obj['xyxy'][0],obj['xyxy'][1]]
+        #    end_point = [obj['xyxy'][2],obj['xyxy'][3]]
+        #    color = (255, 0, 0)
+        #    color = color[::-1]
+        #    thickness = 2
+        #    cv2.rectangle(frame, start_point, end_point, color, thickness)
+        #    cv2.putText(
+        #        frame, obj['name'], start_point, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 1, cv2.LINE_AA)
 
         # update camera display
         cv2.imshow("Camera", frame)
         cv2.waitKey(1)
 
+        # steer robot
+        #for i,obj in enumerate(objects_detected):
+        #    if target in obj['name']:
+        #        x = (obj['xyxy'][0] + obj['xyxy'][2]) / 2.0
+        #        y = (obj['xyxy'][1] + obj['xyxy'][3]) / 2.0
+        #        dx = x - frame.shape[1] / 2
+        #        print(i, x, y, frame.shape, dx)
+        #        # if distance is 2m, we need to turn:
+        #        
+        #        
+        #        #0 406.0 254.5 (480, 640, 3) 85.5
+        #        #speed = 0.55 + (-dx/100/5.0)
+        #        #robot.set_left_tread_speed(speed)
+        #        #robot.set_right_tread_speed(-speed)
+        #        break # keep only first matching target
+
+        dx = 104 # px
+        #dx_cm = (dx / 104) * 22
+        #distance = 176
+        #angle = numpy.arctan(dx_cm/distance) * 180/numpy.pi
+        angle = numpy.arctan(22/176) * (dx / 104) * 180 / numpy.pi
+        print(angle)
+
+        s = 0.6
+        w = 12 #deg/s
+        t = angle / w
+        start = datetime.datetime.now()
+        robot.set_left_tread_speed(s)
+        robot.set_right_tread_speed(-s)
+        while 1:
+            now = datetime.datetime.now()
+            if (now-start).total_seconds() >= t:
+                break
+        robot.stop()
+        
+
+        
 
 if __name__ == '__main__':
     robot = Robot()    
