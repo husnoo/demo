@@ -59,8 +59,11 @@ def main():
     # also 20 rotations at 0.6 will take forever. Let's just do 5.
     
     
-    speeds = numpy.arange(0.6,1.01,0.1)
-    counts = numpy.array([5,5,10,20,20])
+    #speeds = numpy.arange(0.6,1.01,0.1)
+    #counts = numpy.array([5,5,10,20,20])
+
+    speeds = numpy.arange(0.5, 0.557, 0.558, 0.559, 0.56])
+    counts = numpy.array([2,2,2,2,2])
     
     time_cw = numpy.zeros(len(speeds))
     time_ccw = numpy.zeros(len(speeds))
@@ -88,7 +91,7 @@ def main():
     print(time_cw, time_ccw)
 
 
-#if __name__=='__main__':
-#    main()
+if __name__=='__main__':
+    main()
 
 
