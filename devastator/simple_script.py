@@ -137,9 +137,9 @@ def main(robot):
 
 if __name__ == '__main__':
     robot = Robot()    
-    try:
-        main(robot)
-    except:
-        pass
+    #try:
+    main(robot)
+    #except:
+    #pass
     
     robot.stop()
