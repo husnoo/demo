@@ -50,6 +50,7 @@ def analysis():
     # 180*numpy.arctan(30/200)/numpy.pi = 8.530 degrees
     # the VM takes about 2-3 seconds to respond, so we don't want to move more than  8.530 / 3 == 2.84deg/s
     # this is around 0.567 in terms of driving speed
+    # s=0.60, 12deg/s roughly
     
 
 def main():

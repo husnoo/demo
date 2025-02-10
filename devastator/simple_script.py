@@ -4,7 +4,11 @@ and steer robot to the object.
 
 Problem: VLM responds slowly, and we need to get robot to move very slowly and not just overshoot.
 
-Would it be worth calibrating the robot rotation?
+Will make use of robot calibration.
+
+Will also use VLM in blocking mode to simplify.
+
+Will assume distance to target is 2m.
 
 '''
 
@@ -28,7 +32,7 @@ class VLMProxy:
         self.first = True
         self.last_reply = datetime.datetime.now()
     
-    def process(self, img, prompt):
+    def process(self, img, prompt, block=False):
         # TODO: rewrite this with the pubsub/encode/decode approach - will need to update the paligemma code too
         print('VLMProxy process img=', img.shape, img.dtype)
         request_data = msgpack.packb({
@@ -44,7 +48,7 @@ class VLMProxy:
         else:
             # check if there's an answer yet, then send new one
             try:
-                ret_msg = self.socket.recv(block=False)
+                ret_msg = self.socket.recv(block=block)
                 ret_data = msgpack.unpackb(ret_msg)
                 self.last_reply = datetime.datetime.now()
                 self.socket.send(request_data)
@@ -60,7 +64,18 @@ class VLMProxy:
 
 
 
+    
+
+
+
+
 def main(robot):
+    # So if the distance is about 2m, and an object is about 30cm to the right, we need to move 
+    # 180*numpy.arctan(30/200)/numpy.pi = 8.530 degrees
+    # the VM takes about 2-3 seconds to respond, so we don't want to move more than  8.530 / 3 == 2.84deg/s
+    # this is around 0.567 in terms of driving speed
+    # s=0.60, 12deg/s roughly
+
 
     cv2.startWindowThread()
     picam2 = picamera2.Picamera2()
@@ -75,7 +90,7 @@ def main(robot):
     while True:
         frame = picam2.capture_array()
         # look for target
-        response = vlm.process(frame, prompt)
+        response = vlm.process(frame, prompt, block=True)
         if response['ret'] and 'objects' in response['ret']:
             # we have objects
             objects_detected = []
@@ -83,7 +98,7 @@ def main(robot):
                 if 'xyxy' in obj and target in obj['name']:
                     print(f"target: {target}, name: {obj['name']}")
                     objects_detected.append(obj)
-
+        
 
         # steer robot
         #robot.set_left_tread_speed(speed)
@@ -94,11 +109,14 @@ def main(robot):
                 y = (obj['xyxy'][1] + obj['xyxy'][3]) / 2.0
                 dx = x - frame.shape[1] / 2
                 print(i, x, y, frame.shape, dx)
-                #0 406.0 254.5 (480, 640, 3) 85.5
-                speed = 0.55 + (-dx/100/5.0)
-                robot.set_left_tread_speed(speed)
-                robot.set_right_tread_speed(-speed)
+                # if distance is 2m, we need to turn:
                 
+                
+                #0 406.0 254.5 (480, 640, 3) 85.5
+                #speed = 0.55 + (-dx/100/5.0)
+                #robot.set_left_tread_speed(speed)
+                #robot.set_right_tread_speed(-speed)
+                break # keep only first matching target
                 
         # draw box around target
         for i,obj in enumerate(objects_detected):
@@ -109,7 +127,8 @@ def main(robot):
             color = color[::-1]
             thickness = 2
             cv2.rectangle(frame, start_point, end_point, color, thickness)
-            cv2.putText(frame, obj['name'], start_point, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 1, cv2.LINE_AA)
+            cv2.putText(
+                frame, obj['name'], start_point, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 1, cv2.LINE_AA)
 
         # update camera display
         cv2.imshow("Camera", frame)
