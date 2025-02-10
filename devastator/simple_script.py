@@ -138,7 +138,7 @@ def main(robot):
         #distance = 176
         #angle = numpy.arctan(dx_cm/distance) * 180/numpy.pi
 
-        if numpy.abs(dx) > 10:
+        if numpy.abs(dx) > 20:
             angle = numpy.arctan(22/176) * (dx / 104) * 180 / numpy.pi
             print(angle)
             s = 0.60
@@ -152,8 +152,13 @@ def main(robot):
             while 1:
                 now = datetime.datetime.now()
                 if (now-start).total_seconds() >= t:
+                    robot.stop()
                     break
-        robot.stop()
+        else:
+            robot.set_left_tread_speed(-0.8)
+            robot.set_right_tread_speed(-0.8)
+
+
         
 
         
