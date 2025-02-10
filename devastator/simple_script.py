@@ -89,70 +89,70 @@ def main(robot):
 
     target = 'red bottle'
 
-    #vlm = VLMProxy('tcp://192.168.0.52:8089')
+    vlm = VLMProxy('tcp://192.168.0.52:8089')
     prompt = 'detect ' + target
     objects_detected = []
     while True:
         frame = picam2.capture_array()
         # look for target
-        #response = vlm.process(frame, prompt, block=True)
-        #if response['ret'] and 'objects' in response['ret']:
-        #    # we have objects
-        #    objects_detected = []
-        #    for obj in response['ret']['objects']:
-        #        if 'xyxy' in obj and target in obj['name']:
-        #            print(f"target: {target}, name: {obj['name']}")
-        #            objects_detected.append(obj)
+        response = vlm.process(frame, prompt, block=True)
+        if response['ret'] and 'objects' in response['ret']:
+            # we have objects
+            objects_detected = []
+            for obj in response['ret']['objects']:
+                if 'xyxy' in obj and target in obj['name']:
+                    print(f"target: {target}, name: {obj['name']}")
+                    objects_detected.append(obj)
         
         ## draw box around target
-        #for i,obj in enumerate(objects_detected):
-        #    frame = numpy.copy(frame)
-        #    start_point = [obj['xyxy'][0],obj['xyxy'][1]]
-        #    end_point = [obj['xyxy'][2],obj['xyxy'][3]]
-        #    color = (255, 0, 0)
-        #    color = color[::-1]
-        #    thickness = 2
-        #    cv2.rectangle(frame, start_point, end_point, color, thickness)
-        #    cv2.putText(
-        #        frame, obj['name'], start_point, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 1, cv2.LINE_AA)
+        for i,obj in enumerate(objects_detected):
+            frame = numpy.copy(frame)
+            start_point = [obj['xyxy'][0],obj['xyxy'][1]]
+            end_point = [obj['xyxy'][2],obj['xyxy'][3]]
+            color = (255, 0, 0)
+            color = color[::-1]
+            thickness = 2
+            cv2.rectangle(frame, start_point, end_point, color, thickness)
+            cv2.putText(
+                frame, obj['name'], start_point, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 1, cv2.LINE_AA)
+            # centerline
+            center_x = int(frame.shape[1] / 2)
+            cv2.line(frame,(center_x,0),(center_x,frame.shape[0]),(255,0,0),1)
 
         # update camera display
         cv2.imshow("Camera", frame)
         cv2.waitKey(1)
 
         # steer robot
-        #for i,obj in enumerate(objects_detected):
-        #    if target in obj['name']:
-        #        x = (obj['xyxy'][0] + obj['xyxy'][2]) / 2.0
-        #        y = (obj['xyxy'][1] + obj['xyxy'][3]) / 2.0
-        #        dx = x - frame.shape[1] / 2
-        #        print(i, x, y, frame.shape, dx)
-        #        # if distance is 2m, we need to turn:
-        #        
-        #        
-        #        #0 406.0 254.5 (480, 640, 3) 85.5
-        #        #speed = 0.55 + (-dx/100/5.0)
-        #        #robot.set_left_tread_speed(speed)
-        #        #robot.set_right_tread_speed(-speed)
-        #        break # keep only first matching target
-
-        dx = 104 # px
+        dx = 0
+        for i,obj in enumerate(objects_detected):
+            if target in obj['name']:
+                x = (obj['xyxy'][0] + obj['xyxy'][2]) / 2.0
+                y = (obj['xyxy'][1] + obj['xyxy'][3]) / 2.0
+                dx = x - frame.shape[1] / 2
+                print(i, x, y, frame.shape, dx)
+                break # keep only first matching target
+        print('dx=', dx)
+        #dx = 104 # px
         #dx_cm = (dx / 104) * 22
         #distance = 176
         #angle = numpy.arctan(dx_cm/distance) * 180/numpy.pi
-        angle = numpy.arctan(22/176) * (dx / 104) * 180 / numpy.pi
-        print(angle)
 
-        s = 0.6
-        w = 12 #deg/s
-        t = angle / w
-        start = datetime.datetime.now()
-        robot.set_left_tread_speed(s)
-        robot.set_right_tread_speed(-s)
-        while 1:
-            now = datetime.datetime.now()
-            if (now-start).total_seconds() >= t:
-                break
+        if numpy.abs(dx) > 10:
+            angle = numpy.arctan(22/176) * (dx / 104) * 180 / numpy.pi
+            print(angle)
+            s = 0.60
+            w = 25 #deg/s
+            t = numpy.abs(angle / w)
+            sign = numpy.sign(angle)
+            start = datetime.datetime.now()
+            robot.set_left_tread_speed(-s * sign)
+            robot.set_right_tread_speed(s * sign)
+            print('dx={:.3f}, angle={:.2f}, t={}'.format(dx, angle, t))
+            while 1:
+                now = datetime.datetime.now()
+                if (now-start).total_seconds() >= t:
+                    break
         robot.stop()
         
 

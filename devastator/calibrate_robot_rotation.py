@@ -21,10 +21,10 @@ except:
     pass
 
 def analysis():
-    speeds = numpy.array([0.57, 0.58, 0.59, 0.6, 0.7, 0.8, 0.9, 1. ])
-    counts = numpy.array([1,1,1,5,5,10,20,20])
-    ccw_time = numpy.array([77.96, 59.40, 47.37, 147.13,  41.26,  45.56,   59.80,  43.38])
-    cw_time = numpy.array([43.63, 45.01, 37.52, 149.36,  40.58,   43.93,  58.37,  42.39])
+    speeds = numpy.array(  [0.57,  0.58,  0.59,  0.6,     0.7,   0.8,   0.9,   1. ])
+    counts = numpy.array(  [1,     1,     1,     5,       5,     10,    20,    20])
+    ccw_time = numpy.array([77.96, 59.40, 47.37, 147.13,  41.26, 45.56, 59.80, 43.38])
+    cw_time = numpy.array( [43.63, 45.01, 37.52, 149.36,  40.58, 43.93, 58.37, 42.39])
     
     avg_time = (ccw_time + cw_time) / 2.0
     time_per_rotation = avg_time / counts
