@@ -21,10 +21,11 @@ except:
     pass
 
 def analysis():
-    speeds = numpy.arange(0.6,1.01,0.1)
-    counts = numpy.array([5,5,10,20,20])
-    ccw_time = numpy.array([147.137595,  41.266779,  45.56845,   59.802386,  43.389424])
-    cw_time = numpy.array([149.367774,  40.58986,   43.930003,  58.371789,  42.395014])
+    speeds = numpy.array([0.57, 0.58, 0.59, 0.6, 0.7, 0.8, 0.9, 1. ])
+    counts = numpy.array([1,1,1,5,5,10,20,20])
+    ccw_time = numpy.array([77.96, 59.40, 47.37, 147.13,  41.26,  45.56,   59.80,  43.38])
+    cw_time = numpy.array([43.63, 45.01, 37.52, 149.36,  40.58,   43.93,  58.37,  42.39])
+    
     avg_time = (ccw_time + cw_time) / 2.0
     time_per_rotation = avg_time / counts
     degrees_per_second = 360 / time_per_rotation
@@ -33,6 +34,8 @@ def analysis():
     qfunc = numpy.poly1d(coeffs)
     print("coeffs:", coeffs)
     # coeffs: [237.70067705   8.99598535 -78.82208964]
+    # coeffs: [252.2557391  -15.07425675 -69.11377422]
+
     speeds_fit = numpy.linspace(0.55, 1, 100)
     degrees_fit = qfunc(speeds_fit)
 
@@ -62,8 +65,8 @@ def main():
     #speeds = numpy.arange(0.6,1.01,0.1)
     #counts = numpy.array([5,5,10,20,20])
 
-    speeds = numpy.arange(0.5, 0.557, 0.558, 0.559, 0.56])
-    counts = numpy.array([2,2,2,2,2])
+    speeds = numpy.array([0.57, 0.58, 0.59])
+    counts = numpy.array([1,1,1])
     
     time_cw = numpy.zeros(len(speeds))
     time_ccw = numpy.zeros(len(speeds))

@@ -60,17 +60,16 @@ class VLMProxy:
 
 
 
-def main():
-    robot = Robot()
+def main(robot):
 
     cv2.startWindowThread()
     picam2 = picamera2.Picamera2()
-    picam2.configure(picam2.create_preview_configuration(main={"format": 'XRGB888', "size": (640, 480)}))
+    picam2.configure(picam2.create_preview_configuration(main={"format": 'RGB888', "size": (640, 480)}))
     picam2.start()
 
     target = 'red bottle'
 
-
+    vlm = VLMProxy('tcp://192.168.0.52:8089')
     prompt = 'detect ' + target
     objects_detected = []
     while True:
@@ -89,11 +88,20 @@ def main():
         # steer robot
         #robot.set_left_tread_speed(speed)
         #robot.set_right_tread_speed(speed)
-
-
-        
+        for i,obj in enumerate(objects_detected):
+            if target in obj['name']:
+                x = (obj['xyxy'][0] + obj['xyxy'][2]) / 2.0
+                y = (obj['xyxy'][1] + obj['xyxy'][3]) / 2.0
+                dx = x - frame.shape[1] / 2
+                print(i, x, y, frame.shape, dx)
+                #0 406.0 254.5 (480, 640, 3) 85.5
+                speed = 0.55 + (-dx/100/5.0)
+                robot.set_left_tread_speed(speed)
+                robot.set_right_tread_speed(-speed)
+                
+                
         # draw box around target
-        for obj in objects_detected:
+        for i,obj in enumerate(objects_detected):
             frame = numpy.copy(frame)
             start_point = [obj['xyxy'][0],obj['xyxy'][1]]
             end_point = [obj['xyxy'][2],obj['xyxy'][3]]
@@ -108,23 +116,11 @@ def main():
         cv2.waitKey(1)
 
 
+if __name__ == '__main__':
+    robot = Robot()    
+    try:
+        main(robot)
+    except:
+        pass
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+    robot.stop()
