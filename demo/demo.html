@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Nawal Husnoo - Tech Demo</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+body {
+    margin:50px 0; 
+    padding:0;
+    text-align:center;
+    font-size: 20px;
+}
+
+#content {
+    width:900px;
+    margin:0 auto;
+    text-align:left;
+    padding:15px;
+    border:1px dashed #333;
+    background-color:#eee;
+}
+
+h1 {
+    margin-top: 50px;
+}
+
+    </style>
+  </head>
+  <body>
+<div id="content">
+
+<!--    <h1>Hello, world!</h1> -->
+<h1>General notes</h1>
+
+<p>Some sample code is available here: <a href="https://github.com/husnoo/demo/tree/main/">https://github.com/husnoo/demo/tree/main/</a>.
+
+<p>Please note that none of this code is "production" quality - not enough encapsulation, few well thought out interfaces, and no tests whatsoever. These are all things I would normally put a lot more thought/effort into for operational work. The code here reflects the quality of a prototype, i.e. the first version I would write to see if something is possible in a reasonable amount of time and with available resources.</p>
+
+
+
+
+
+
+<h1>First robot</h1>
+<p>My first robot was Shu. It was a differential drive robot built from a simple acrylic platform. It had two servos (modified for continuous rotation) for providing the driving force, and an infrared range finder on a sweeping servo to avoid obstacles. </p>
+
+<p>Video available on YouTube: <a href="https://www.youtube.com/watch?v=QEJ0pGEjfcI">https://www.youtube.com/watch?v=QEJ0pGEjfcI</a></p>
+
+<div style="text-align: center">
+  <img src="images/shu.png"/>
+</div>
+
+
+
+
+
+
+<h1>Devastator</h1>
+<p>This is my current robot platform. It is based off the <a href="https://thepihut.com/products/devastator-tank-mobile-robot-platform-metal-dc-gear-motor">devastator</a> tank with tracks and 2 DC motors. The motors run off a 9V (6*AA) pack with a <a href="https://thepihut.com/products/maker-drive-simplifying-h-bridge-motor-driver">motor driver</a> using a PWM signal.</p>
+
+<p>The PWM is provided by an I2C <a href="https://www.amazon.co.uk/dp/B06XSFFXQY">PWM servo driver</a>, which is controlled from the Raspberry Pi 4.</p>
+
+<p>See video for simple control - fwd/back/turn: <a href="https://www.youtube.com/watch?v=BhBdad6Q4ho">https://www.youtube.com/watch?v=BhBdad6Q4ho</a>.
+<p>Code: <a href="https://github.com/husnoo/demo/tree/main/devastator">https://github.com/husnoo/demo/tree/main/devastator</a></p>
+<div style="text-align: center">
+    <img src="images/devastator1.png"/>
+</div>
+
+
+
+
+
+<h2>Target seeking using VLM</h2>
+<p>I wrote a simple script to take an image from the picam, run it through a paligemma Visual Language Model (running on a desktop computer with a 3090 NVIDIA GPU), and decide how to drive the robot into the target.</p>
+<br>
+<p>Video: <a href="https://www.youtube.com/shorts/ZTNX9jnDstI">https://www.youtube.com/shorts/ZTNX9jnDstI</a></p>
+<p>Code: <a href="https://github.com/husnoo/demo/blob/main/devastator/simple_script.py">https://github.com/husnoo/demo/blob/main/devastator/simple_script.py</a></p>
+
+<div style="text-align: center">
+    <img src="images/devastator2.png"/>
+    <img src="images/devastator3.png"/>
+</div>
+
+<br>
+<br>
+<p>I had some trouble with the control signals for the motors, I thought I could send a duty cycle from 0-1, but somehow either that's not right or there's a bug in my implementation, so I wrote a script to manually calibrate the rotation rate of the robot with different driving signals ("speed" in the plot below).</p>
+<p>Code: <a href="https://github.com/husnoo/demo/blob/main/devastator/calibrate_robot_rotation.py">https://github.com/husnoo/demo/blob/main/devastator/calibrate_robot_rotation.py</a></p>
+
+<div style="text-align: center">
+    <img src="images/devastator4.png"/>
+</div>
+
+
+
+
+
+
+
+
+<h1>Simulations</h1>
+
+<p>This is my most current and on-going project. The general idea is based on these two papers: <a href="https://arxiv.org/pdf/2212.00541">Predictive Sampling: Real-time Behaviour Synthesis with MuJoCo</a> and <a href="https://language-to-reward.github.io/">Language to Rewards for Robotic Skill Synthesis</a>.
+
+<p>The idea is that instead of building controllers that do specific tasks for a robot, you can use simulation to try out many versions possible movements. You pick whichever sequence that gets the job done in simulation and apply it to the real robot.</p>
+
+<p>At a higher level, an LLM can be used to take human instructions and turn it into python code to express a loss function for the motion (e.g. the gripper gets close to the apple, the apple gets raised by 20 cm, etc).</p>
+
+<p>I'm still at the general stage of setting the scene for reproducing the essential parts of these works. I'm learning the necessary code to get mujoco to be the simulation of a "real" robot in webots. These are shown in the next two pictures.</p>
+
+<div style="text-align: center">
+    <img src="images/sim1.png"/>
+    <img src="images/sim3.png"/>
+</div>
+
+<br>
+<p> What I've done so far is get both robots to drive forwards with some calibrated values of their speeds such that they both advance the same distance towards a target (top left panel in the plots below).</p>
+
+<div style="text-align: center">
+    <img src="images/sim4.png" width="800px"/>
+</div>
+
+<br>
+<p>For the Mujoco code, I started off this <a href="https://pab47.github.io/mujocopy.html">tutorial</a>, encapsulated the visualiser as an object and created a multiple-simulation version.</p>
+<p>Code: <a href="https://github.com/husnoo/demo/blob/main/webots/mujoco_viz.py#L180">https://github.com/husnoo/demo/blob/main/webots/mujoco_viz.py#L180</a></p>
+<div style="text-align: center">
+    <img src="images/sim2.png" width="800px"/>
+</div>
+<br>
+<p>The intention is that the large number of mujoco versions won't normally be visualised, so they will run a lot faster than the webots code.</p>
+
+
+
+
+<h1>Visual Language Models</h1>
+<p>I can't remember exactly which VLM I used for this (might have been Llava-1.6 and/or CogVLM) - but I was somewhat disappointed - I might try some sort of pose estimation later.</p>
+<div style="text-align: center">
+    <img src="images/vlm1.png"/>
+    <img src="images/vlm2.png"/>
+</div>
+
+<br>
+<p>I think this one was Paligemma:</p>
+<div style="text-align: center">
+    <img src="images/vlm3.png"/>
+</div>
+
+<p>I wrapped the call to paligemma as a simple server (using msgpack + pynng for speed) to run on my desktop with a GPU.</p>
+<p>Code for paligemma call/server: <a href="https://github.com/husnoo/demo/tree/main/vlm">https://github.com/husnoo/demo/tree/main/vlm</a></p>
+
+<p>An example of using it with webots - making the robot go to the rubber duck.</p>
+<p>Code: <a href="https://github.com/husnoo/demo/blob/main/webots/controllers/01_world_01_simple_controller/01_world_01_simple_controller.py">01_world_01_simple_controller.py</a>.</p>
+<p>Video: <a href="https://youtu.be/y-WIHkzlEkg">https://youtu.be/y-WIHkzlEkg</a></p>
+<div style="text-align: center">
+    <img src="images/vlm4.png"/>
+</div>
+
+
+
+
+
+
+<h1>GPS logger</h1>
+<p>My friend was doing an MSc in fisheries or something and he was doing some paddling back and forth on the river with some sound measuring instruments. He wanted a way to geolocate himself during different tests - I made this contraption using a serial GPS module and an arduino board. He didn't end up using the data from it, but the device worked fine. It stored the data to a text file on an SD-card.<p>
+<div style="text-align: center">
+    <img src="images/gps1.png"/>
+</div>
+<br>
+<p>I made some quick and dirty plots of the test data (we went for a walk around the block) - it seems to be accurate to a few meters.</p>
+<div style="text-align: center">
+    <img src="images/gps2.png" width="800px"/>
+</div>
+
+
+
+
+
+<h1>3D Printed Hood / Freecad design</h1>
+
+<p>Early in my experiments with GPU computing, I bought this server GPU (NVIDIA Tesla K40m). It was a nice GPU to start playing with pytorch/tensorflow on, but it is meant for a server blade - so it has no cooling.</p>
+<div style="text-align: center">
+    <img src="images/tesla.png"/>
+</div>
+
+<br>
+<p>I tried out various versions of a hood to attach a fan to it. I created the shapes in FreeCad, and printed them with a really rubbish 3D printer (an Acrylic Prusa Mendel I3). The last two images represent the most successful version of the cooling system. This brought the GPU temperature from 107 degrees C (at which point it went into thermal shutdown) down to around 60 degrees C.</p>
+
+<div style="text-align: center">
+    <img src="images/hood1.png"/>
+    <img src="images/hood2.png"/>
+    <img src="images/hood3.png"/>
+    <img src="images/hood4.png"/>
+    <img src="images/hood5.png"/>
+</div>
+
+
+
+<h1>Multi-language spliced books</h1>
+<p>I enjoy learning languages - but in my own way. For Italian, I bought a few Italian books on amazon, and ripped them into text form, ran them through Google Translate and stitched them together into a phrase-pairs book.</p>
+
+<div style="text-align: center">
+    <img src="images/language.png"/>
+</div>
+
+<br>
+<p>I never finished reading any of the books but I did learn a bit of Italian, enough to watch some cartoons and pick up more words and then I was able to get by on a trip in Italy. It's not about learning fast for me, but about having fun learning. This is the only way I'll stick with it.</p>
+
+<p>For Swedish, I'm currently learning by running the transcript of a tv show through anki spaced repetition cards.</p>
+
+
+
+
+
+
+<h1>Soldered up a kit</h1>
+<p>My friend has a boat and he uses some sort of SeaTalk device to know the position of other boats. He had some issue with having to hold his tablet on the outside of the boat to connect to the device. I was able to find <a href="https://www.ebay.co.uk/itm/275066460273">this device as a kit off ebay</a>. My sum total contribution was to find out about its existence and solder it up. It acts as a wireless bridge, which he can connect to from his tablet.</p>
+
+<div style="text-align: center">
+    <img src="images/nmea1.png" width="400px"/>
+    <img src="images/nmea2.png" width="400px"/>
+</div>
+
+
+
+
+
+<h1>Filling in gaps between houses using shapefiles</h1>
+<p>I went to a hackathon in Bristol where somebody was looking at ideas for planning permission/development to increase the density of people in Bristol. For e.g. some bus routes would only be economical above a certain density of non-car users. I wrote a hacky script to use shape files and work out some possible areas with gaps based on where the houses were. Initially I used an easily available shapefile (might have been part of Exeter), but then he was able to obtain the ones for Bristol from some appropriate source and came to visit me in Exeter to run through the process.</p>
+<div style="text-align: center">
+    <img src="images/shapes.png"/>
+</div>
+
+
+
+
+
+<h1>Abandoned note-taking program</h1>
+<p>The creation of a super nerdy custom perfect note taking app was my ambition for about 15 years. It ended up being my excuse to learn a lot of techniques in programming. This latest version was abandoned not because it became too hard - in this case I still had a grip on the software, but because it was supplanted by emacs/org-mode.</p>
+
+<p>It worked great on a HDMI external monitor + wacom, but the cabling was a pain to set up every time I want to write stuff down. I wanted to use it on the pinenote - this is much harder because it needs to have very low latency on the e-ink screen. The pinenote itself is a massive faff to get into Linux - Pine64 builds the hardware and waits for the community to sort out the linux distribution. By the time I moved to emacs/org-mode for notekeeping, Linux on the tablet couldn't sleep properly and wasted battery with the backlight.</p>
+
+<p>Code: <a href="https://github.com/husnoo/demo/tree/main/notebook">https://github.com/husnoo/demo/tree/main/notebook</a></p>
+
+<p>Most of the UI doesn't work, but the pencil and text tool work, I can paste an image with CTRL+V.</p>
+<p>Clicking and shift-clicking selects items.</p>
+<p>Scale/rotate work.</p>
+<p>Pages save automatically.</p>
+<p>I used fabric.js for the objects on the canvas, and Bacon for helping with the UI tools selection.</p>
+
+<p>There are three views: The list of available notebooks, the editing view and the reading mode.</p>
+<div style="text-align: center">
+    <img src="images/notes1.png"/>
+    <img src="images/notes2.png"/>
+    <img src="images/notes3.png"/>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+  </body>
+</html>
